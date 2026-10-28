@@ -1,0 +1,319 @@
+---
+// Brand files copied from ambrogio-brand.
+import '../brand/fonts.css';
+import '../brand/tokens.css';
+import Logo from '../brand/logo-wordmark.svg';
+import Homelab from '../components/Homelab.astro';
+import GitHubIcon from '../assets/icons/github.svg';
+import OpenSourceIcon from '../assets/icons/opensourceinitiative.svg';
+
+const docs = 'https://ambrogio-app.github.io/ambrogio-docs/';
+const github = 'https://github.com/ambrogio-app';
+const tagline = 'Talk to it like Alexa, chat with it like ChatGPT — one self-hosted AI assistant for your whole homelab.';
+
+const features = [
+	{
+		title: 'Voice in every room',
+		text: 'A small device with a microphone and a speaker waits for its wake word and answers out loud. Speech is recognised and spoken on your server, and audio is never stored.',
+		link: { text: 'Voice', href: `${docs}explanation/voice/` },
+	},
+	{
+		title: 'Chat from the browser or the terminal',
+		text: 'Type to Ambrogio from the web chat or a terminal. Every conversation is shared: a question asked in the kitchen can go on in the browser.',
+		link: { text: 'Conversations', href: `${docs}explanation/conversations/` },
+	},
+	{
+		title: 'Multi-agent by design',
+		text: 'Each agent you configure handles one job, such as the house, music, weather or your documents, with its own instructions and its own model. An orchestrator picks the right one for each request.',
+		link: { text: 'Agents', href: `${docs}explanation/agents/` },
+	},
+	{
+		title: 'The services you already host',
+		text: 'Agents use your services through the Model Context Protocol: Home Assistant, Music Assistant, OpenCloud, or any other MCP server.',
+		link: { text: 'Connect an MCP server', href: `${docs}how-to/connect-mcp-server/` },
+	},
+	{
+		title: 'Your choice of LLM',
+		text: 'Each agent uses an LLM from a cloud provider or one that runs on your network. With every model at home, nothing leaves it.',
+		link: { text: 'Choose the LLM provider', href: `${docs}how-to/choose-llm-provider/` },
+	},
+	{
+		title: 'Runs on your server',
+		text: 'The backend runs with Docker on a home server and keeps every conversation in its own database, ready to search later.',
+		link: { text: 'Before you install', href: `${docs}reference/requirements/` },
+	},
+];
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={Astro.site} />
+		<title>Ambrogio — one self-hosted AI assistant for your whole homelab</title>
+		<meta name="description" content={tagline} />
+		<meta name="color-scheme" content="light" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Ambrogio" />
+		<meta property="og:description" content={tagline} />
+		<meta property="og:url" content={Astro.site} />
+	</head>
+	<body>
+		<nav class="topbar" aria-label="Links">
+			<a class="pill" href={`${github}/ambrogio-backend/blob/main/LICENSE`}><OpenSourceIcon class="icon" aria-hidden="true" />Open source · MIT</a>
+			<a href={docs}>
+				<svg class="icon line" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" /></svg>
+				Docs
+			</a>
+			<a href={github}><GitHubIcon class="icon" aria-hidden="true" />GitHub</a>
+		</nav>
+		<header class="hero">
+			<div class="wrap">
+				<h1><Logo class="logo" /></h1>
+				<p class="tagline">{tagline}</p>
+				<p class="lede">Multi-agent by design: each agent you configure handles one job, such as the house, music, weather or your documents, using the services you already host.</p>
+				<div class="actions">
+					<a class="button primary" href={`${docs}tutorials/install-ambrogio/`}>Install Ambrogio</a>
+				</div>
+				<video
+					class="demo"
+					controls
+					preload="none"
+					playsinline
+					poster="/video/ambrogio-demo.jpg"
+					width="1280"
+					height="720"
+					aria-label="Demo: one session by voice from the satellite and by typing in the web chat"
+				>
+					<source src="/video/ambrogio-demo.mp4" type="video/mp4" />
+					<a href="/video/ambrogio-demo.mp4">Watch the demo video</a>.
+				</video>
+			</div>
+		</header>
+
+		<main>
+			<section class="wrap" aria-labelledby="homelab">
+				<h2 id="homelab">One assistant for your homelab</h2>
+				<p class="intro">Ambrogio runs on your server, next to the services you already host. Each agent reaches one of them through the Model Context Protocol, and the orchestrator picks the right agent for each request.</p>
+				<Homelab />
+				<p class="note">The services of <a href={`${github}/ambrogio-homelab-example`}><code>ambrogio-homelab-example</code></a>. Logos are trademarks of their owners.</p>
+			</section>
+
+			<section class="wrap" aria-labelledby="features">
+				<h2 id="features">What it does</h2>
+				<ul class="grid">
+					{features.map((f) => (
+						<li class="card">
+							<h3>{f.title}</h3>
+							<p>{f.text}</p>
+							<a href={f.link.href}>{f.link.text} →</a>
+						</li>
+					))}
+				</ul>
+			</section>
+
+
+		</main>
+
+		<footer class="wrap">
+			<a href={docs}>Documentation</a>
+			<a href={github}>GitHub</a>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--ink: var(--ambrogio-neutral-900);
+		--muted: var(--ambrogio-neutral-600);
+		--bg: var(--ambrogio-neutral-100);
+		--surface: var(--ambrogio-neutral-0);
+		--line: var(--ambrogio-neutral-300);
+		--gold: var(--ambrogio-gold-500);
+		--link: var(--ambrogio-gold-700);
+	}
+	* {
+		box-sizing: border-box;
+	}
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--ink);
+		font: 17px/1.6 var(--ambrogio-font);
+	}
+	a {
+		color: var(--link);
+	}
+	code {
+		font-size: 0.85em;
+	}
+	h2 {
+		font-size: 1.8rem;
+		margin: 0 0 1.5rem;
+	}
+	h3 {
+		font-size: 1.1rem;
+		margin: 0 0 0.5rem;
+	}
+	.wrap {
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+	/* More specific than .wrap, whose padding shorthand would reset the vertical padding. */
+	main > section.wrap {
+		padding-top: 5rem;
+	}
+	main > section.wrap:last-child {
+		padding-bottom: 5rem;
+	}
+</style>
+
+<style>
+	.hero {
+		padding: 2rem 0 3rem;
+		text-align: center;
+		border-bottom: 1px solid var(--line);
+	}
+	h1 {
+		margin: 0 0 1.5rem;
+		line-height: 0;
+	}
+	.hero :global(.logo) {
+		width: min(16rem, 70vw);
+		height: auto;
+	}
+	.tagline {
+		font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+		max-width: 40rem;
+		margin: 0 auto 1rem;
+	}
+	.lede {
+		color: var(--muted);
+		max-width: 40rem;
+		margin: 0 auto 2rem;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		justify-content: center;
+	}
+	.topbar {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 0.5rem 1.25rem;
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: 1rem 1rem 0;
+	}
+	.topbar a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--ink);
+		font-weight: 700;
+		font-size: 0.95rem;
+		text-decoration: none;
+	}
+	.topbar a:hover {
+		color: var(--link);
+	}
+	.topbar .pill {
+		padding: 0.25rem 0.8rem;
+		border-radius: var(--ambrogio-radius-pill);
+		background: var(--ambrogio-gold-200);
+		font-size: 0.85rem;
+	}
+	.topbar :global(.icon) {
+		width: 1.1em;
+		height: 1.1em;
+		flex-shrink: 0;
+	}
+	.topbar .line {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linejoin: round;
+	}
+	.button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.65rem 1.4rem;
+		border: 1px solid var(--line);
+		border-radius: var(--ambrogio-radius-pill);
+		background: var(--surface);
+		color: var(--ink);
+		text-decoration: none;
+		font-weight: 600;
+	}
+	.button:hover {
+		border-color: var(--gold);
+	}
+	.button.primary {
+		background: var(--gold);
+		border-color: var(--gold);
+		color: var(--ink);
+	}
+	.grid {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+		gap: 1rem;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		padding: 1.5rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: var(--ambrogio-radius-card);
+	}
+	/* A gold bar, round like the bars inside the wordmark. */
+	.card::before {
+		content: '';
+		width: 2.5rem;
+		height: 0.4rem;
+		margin-bottom: 1rem;
+		border-radius: var(--ambrogio-radius-pill);
+		background: var(--gold);
+	}
+	.card p {
+		color: var(--muted);
+		margin: 0 0 1rem;
+		flex: 1;
+	}
+	.demo {
+		display: block;
+		width: 100%;
+		margin-top: 3rem;
+		height: auto;
+		border-radius: var(--ambrogio-radius-card);
+		background: var(--ink);
+	}
+	.intro {
+		color: var(--muted);
+		max-width: 44rem;
+		margin: 0 0 2rem;
+	}
+	.note {
+		color: var(--muted);
+		font-size: 0.85rem;
+		margin: 1rem 0 0;
+	}
+	footer {
+		display: flex;
+		gap: 1.5rem;
+		padding-top: 2rem;
+		padding-bottom: 3rem;
+		border-top: 1px solid var(--line);
+	}
+</style>

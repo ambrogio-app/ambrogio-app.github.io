@@ -1,0 +1,336 @@
+---
+// Ambrogio at the centre of a homelab: the services its agents use around it, the clients outside.
+// The services are those of ambrogio-homelab-example; their logos belong to their owners (see README.md).
+import Logo from '../brand/logo.svg';
+import homeAssistant from '../assets/services/home-assistant.svg?url';
+import musicAssistant from '../assets/services/music-assistant.svg?url';
+import openCloud from '../assets/services/opencloud.svg?url';
+import openMeteo from '../assets/services/open-meteo.png';
+import Android from '../assets/icons/android.svg';
+import Apple from '../assets/icons/apple.svg';
+
+type Service = { name: string; job: string; logo?: string; bg?: string; icon?: 'llm' | 'search' | 'plug' | 'memory'; x: number; y: number };
+
+// Positions in the wide diagram, around Ambrogio at (550, 290). Services in the homelab sit inside its box (x 250-850);
+// the LLM, which can be a cloud provider, and the public web search sit outside it.
+const services: Service[] = [
+	{ name: 'Home Assistant', job: 'lights and devices', logo: homeAssistant, x: 375, y: 140 },
+	{ name: 'Music Assistant', job: 'music on the speakers', logo: musicAssistant, bg: '#18bcf2', x: 550, y: 95 },
+	{ name: 'OpenCloud', job: 'family documents', logo: openCloud, bg: '#20434f', x: 725, y: 140 },
+	{ name: 'Open-Meteo', job: 'weather', logo: openMeteo.src, bg: '#ff8800', x: 725, y: 440 },
+	{ name: 'Any MCP server', job: 'your own tools', icon: 'plug', x: 375, y: 440 },
+	{ name: 'Conversation memory', job: 'search past chats', icon: 'memory', x: 550, y: 470 },
+	{ name: 'Your LLM', job: 'cloud or local', icon: 'llm', x: 960, y: 200 },
+	{ name: 'Web search', job: 'a public service', icon: 'search', x: 960, y: 380 },
+];
+
+type Client = { name: string; icon: 'voice' | 'web' | 'terminal' | 'mobile'; y: number; soon?: string };
+const clients: Client[] = [
+	{ name: 'Voice satellite', icon: 'voice', y: 110 },
+	{ name: 'Web chat', icon: 'web', y: 230 },
+	{ name: 'Terminal', icon: 'terminal', y: 350 },
+	{ name: 'Mobile app', icon: 'mobile', y: 470, soon: 'Android and iOS, soon' },
+];
+
+const centre = { x: 550, y: 290 };
+const tile = 76;
+---
+
+<figure class="homelab">
+	<svg class="wide" viewBox="0 0 1060 580" role="img" aria-labelledby="homelab-title homelab-desc">
+		<title id="homelab-title">Ambrogio in your homelab</title>
+		<desc id="homelab-desc">
+			Ambrogio runs in your homelab. Its agents use {services.map((s) => s.name).join(', ')}. You talk to it from a voice satellite, the web chat or a terminal.
+		</desc>
+
+		<rect class="lab" x="250" y="16" width="600" height="548" rx="44" />
+		<text class="lab-label" x="290" y="58">Your homelab</text>
+
+		{services.map((s) => <line class="link" x1={centre.x} y1={centre.y} x2={s.x} y2={s.y} />)}
+		{clients.map((c) => <line class:list={['link', 'client-link', { soon: c.soon }]} x1={140} y1={c.y} x2={centre.x} y2={centre.y} />)}
+
+		{
+			services.map((s) => (
+				<g transform={`translate(${s.x - tile / 2} ${s.y - tile / 2})`}>
+					{/* A logo drawn on its own coloured square fills the whole tile with that colour. */}
+					<rect class:list={['tile', { filled: s.bg }]} width={tile} height={tile} rx="20" style={s.bg && `fill: ${s.bg}`} />
+					{s.logo && (s.bg
+						? <image href={s.logo} x="8" y="8" width={tile - 16} height={tile - 16} />
+						: <image href={s.logo} x="14" y="14" width={tile - 28} height={tile - 28} />)}
+					{s.icon === 'search' && (
+						<g class="icon" transform="translate(20 20)">
+							<circle cx="15" cy="15" r="11" />
+							<line x1="23" y1="23" x2="34" y2="34" />
+						</g>
+					)}
+					{s.icon === 'llm' && (
+						<g class="icon" transform="translate(18 18)">
+							<path d="M20 2 L24 16 L38 20 L24 24 L20 38 L16 24 L2 20 L16 16 Z" />
+						</g>
+					)}
+					{s.icon === 'memory' && (
+						<g class="icon" transform="translate(18 18)">
+							<path d="M6 20 A14 14 0 1 0 10 10" />
+							<path d="M4 4 V12 H12" />
+							<path d="M20 12 V20 L26 24" />
+						</g>
+					)}
+					{s.icon === 'plug' && (
+						<g class="icon" transform="translate(20 18)">
+							<line x1="12" y1="2" x2="12" y2="12" />
+							<line x1="24" y1="2" x2="24" y2="12" />
+							<path d="M6 12 H30 V20 A12 12 0 0 1 6 20 Z" />
+							<line x1="18" y1="32" x2="18" y2="40" />
+						</g>
+					)}
+					<text class="name" x={tile / 2} y={tile + 24}>{s.name}</text>
+					<text class="job" x={tile / 2} y={tile + 44}>{s.job}</text>
+				</g>
+			))
+		}
+
+		<g transform={`translate(${centre.x - 70} ${centre.y - 70})`}>
+			<Logo width="140" height="140" aria-hidden="true" />
+		</g>
+		<text class="centre-label" x={centre.x} y={centre.y + 100}>Ambrogio</text>
+
+		{
+			clients.map((c) => (
+				<g transform={`translate(${100 - tile / 2} ${c.y - tile / 2})`}>
+					<rect class:list={['tile', 'client', { soon: c.soon }]} width={tile} height={tile} rx="38" />
+					{c.icon === 'mobile' && (
+						<>
+							<Android x="13" y="26" width="24" height="24" class="brand-icon" />
+							<Apple x="39" y="25" width="24" height="24" class="brand-icon" />
+						</>
+					)}
+					<g class="icon" transform="translate(18 18)">
+						{c.icon === 'voice' && (
+							<>
+								<rect x="13" y="2" width="14" height="24" rx="7" />
+								<path d="M6 18 A14 14 0 0 0 34 18" />
+								<line x1="20" y1="32" x2="20" y2="38" />
+							</>
+						)}
+						{c.icon === 'web' && (
+							<>
+								<rect x="2" y="6" width="36" height="28" rx="6" />
+								<line x1="2" y1="14" x2="38" y2="14" />
+							</>
+						)}
+						{c.icon === 'terminal' && (
+							<>
+								<path d="M6 10 L16 20 L6 30" />
+								<line x1="20" y1="30" x2="34" y2="30" />
+							</>
+						)}
+					</g>
+					<text class="name" x={tile / 2} y={tile + 24}>{c.name}</text>
+					{c.soon && <text class="job" x={tile / 2} y={tile + 44}>{c.soon}</text>}
+				</g>
+			))
+		}
+	</svg>
+
+	<div class="narrow">
+		<ul class="row">
+			{clients.map((c) => <li class:list={['chip', { soon: c.soon }]}>{c.soon ? `${c.name}: ${c.soon}` : c.name}</li>)}
+		</ul>
+		<div class="arrow"></div>
+		<div class="lab-narrow">
+			<span class="lab-label-narrow">Your homelab</span>
+			<Logo class="centre-narrow" width="96" height="96" />
+			<strong>Ambrogio</strong>
+			<div class="arrow"></div>
+			<ul class="grid-narrow">
+				{
+					services.map((s) => (
+						<li>
+							{s.logo ? <img src={s.logo} alt="" width="32" height="32" /> : <span class="dot" aria-hidden="true" />}
+							<span>
+								<strong>{s.name}</strong>
+								<small>{s.job}</small>
+							</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</figure>
+
+<style>
+	.homelab {
+		margin: 0;
+	}
+	.wide {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.lab {
+		fill: var(--surface);
+		stroke: var(--line);
+		stroke-width: 2;
+	}
+	.lab-label {
+		font-size: 18px;
+		font-weight: 800;
+		fill: var(--muted);
+	}
+	.link {
+		stroke: var(--gold);
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-dasharray: 2 9;
+	}
+	.client-link {
+		stroke: var(--ambrogio-neutral-400);
+	}
+	.tile {
+		fill: var(--surface);
+		stroke: var(--line);
+		stroke-width: 2;
+	}
+	/* Clients that do not exist yet: dashed outline, fainter link. */
+	.tile.soon {
+		stroke-dasharray: 6 6;
+	}
+	.client-link.soon {
+		opacity: 0.5;
+	}
+	.chip.soon {
+		border-style: dashed;
+		color: var(--muted);
+	}
+	.brand-icon {
+		color: var(--ink);
+	}
+	.tile.filled {
+		stroke: none;
+	}
+	.icon,
+	.icon * {
+		fill: none;
+		stroke: var(--ink);
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	/* A halo in the background colour keeps the labels readable where a link passes behind them. */
+	.name,
+	.job,
+	.centre-label {
+		paint-order: stroke;
+		stroke: var(--surface);
+		stroke-width: 6px;
+		stroke-linejoin: round;
+	}
+	.name {
+		font-size: 16px;
+		font-weight: 800;
+		text-anchor: middle;
+		fill: var(--ink);
+	}
+	.job {
+		font-size: 14px;
+		text-anchor: middle;
+		fill: var(--muted);
+	}
+	.centre-label {
+		font-size: 22px;
+		font-weight: 900;
+		text-anchor: middle;
+		fill: var(--ink);
+	}
+
+	.narrow {
+		display: none;
+	}
+	@media (max-width: 720px) {
+		.wide {
+			display: none;
+		}
+		.narrow {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+	.row {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+	.chip {
+		padding: 0.35rem 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: var(--ambrogio-radius-pill);
+		background: var(--surface);
+		font-weight: 700;
+		font-size: 0.9rem;
+	}
+	.arrow {
+		width: 3px;
+		height: 1.75rem;
+		margin: 0.5rem 0;
+		background: repeating-linear-gradient(var(--gold) 0 3px, transparent 3px 10px);
+	}
+	.lab-narrow {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 1.25rem 1rem 1.5rem;
+		border: 1px solid var(--line);
+		border-radius: var(--ambrogio-radius-card);
+		background: var(--surface);
+	}
+	.lab-label-narrow {
+		align-self: flex-start;
+		font-weight: 800;
+		color: var(--muted);
+		margin-bottom: 0.75rem;
+	}
+	.lab-narrow :global(.centre-narrow) {
+		width: 5rem;
+		height: auto;
+	}
+	.grid-narrow {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+		gap: 0.75rem;
+	}
+	.grid-narrow li {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.grid-narrow img,
+	.dot {
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+		border-radius: 0.5rem;
+	}
+	.dot {
+		background: var(--ambrogio-gold-200);
+	}
+	.grid-narrow span {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.25;
+		font-size: 0.9rem;
+	}
+	.grid-narrow small {
+		color: var(--muted);
+	}
+</style>
