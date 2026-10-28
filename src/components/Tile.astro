@@ -1,0 +1,103 @@
+---
+// The 76 × 76 artwork of one tile of the homelab diagram: a service or a client. It draws SVG elements only, so it
+// goes inside a <g> of the wide diagram or inside its own <svg viewBox="0 0 76 76"> in the narrow one.
+import Android from '../assets/icons/android.svg';
+import Apple from '../assets/icons/apple.svg';
+
+export type TileIcon = 'llm' | 'search' | 'plug' | 'memory' | 'voice' | 'web' | 'terminal' | 'mobile';
+interface Props {
+	logo?: string;
+	bg?: string;
+	icon?: TileIcon;
+	round?: boolean;
+	soon?: boolean;
+}
+const { logo, bg, icon, round, soon } = Astro.props;
+const size = 76;
+---
+
+{/* A logo drawn on its own coloured square fills the whole tile with that colour. */}
+<rect
+	class:list={['tile', { filled: bg, soon }]}
+	width={size}
+	height={size}
+	rx={round ? size / 2 : 20}
+	style={bg && `fill: ${bg}`}
+/>
+{logo && (bg
+	? <image href={logo} x="8" y="8" width={size - 16} height={size - 16} />
+	: <image href={logo} x="14" y="14" width={size - 28} height={size - 28} />)}
+{icon === 'mobile' && (
+	<>
+		<Android x="13" y="26" width="24" height="24" />
+		<Apple x="39" y="25" width="24" height="24" />
+	</>
+)}
+{icon && icon !== 'mobile' && (
+	<g class="icon" transform="translate(18 18)">
+		{icon === 'search' && (
+			<>
+				<circle cx="17" cy="17" r="11" />
+				<line x1="25" y1="25" x2="36" y2="36" />
+			</>
+		)}
+		{icon === 'llm' && <path d="M20 2 L24 16 L38 20 L24 24 L20 38 L16 24 L2 20 L16 16 Z" />}
+		{icon === 'memory' && (
+			<>
+				<path d="M6 20 A14 14 0 1 0 10 10" />
+				<path d="M4 4 V12 H12" />
+				<path d="M20 12 V20 L26 24" />
+			</>
+		)}
+		{icon === 'plug' && (
+			<>
+				<line x1="14" y1="2" x2="14" y2="12" />
+				<line x1="26" y1="2" x2="26" y2="12" />
+				<path d="M8 12 H32 V20 A12 12 0 0 1 8 20 Z" />
+				<line x1="20" y1="32" x2="20" y2="38" />
+			</>
+		)}
+		{icon === 'voice' && (
+			<>
+				<rect x="13" y="2" width="14" height="24" rx="7" />
+				<path d="M6 18 A14 14 0 0 0 34 18" />
+				<line x1="20" y1="32" x2="20" y2="38" />
+			</>
+		)}
+		{icon === 'web' && (
+			<>
+				<rect x="2" y="6" width="36" height="28" rx="6" />
+				<line x1="2" y1="14" x2="38" y2="14" />
+			</>
+		)}
+		{icon === 'terminal' && (
+			<>
+				<path d="M6 10 L16 20 L6 30" />
+				<line x1="20" y1="30" x2="34" y2="30" />
+			</>
+		)}
+	</g>
+)}
+
+<style>
+	.tile {
+		fill: var(--surface);
+		stroke: var(--line);
+		stroke-width: 2;
+	}
+	.tile.filled {
+		stroke: none;
+	}
+	/* Clients that do not exist yet: dashed outline. */
+	.tile.soon {
+		stroke-dasharray: 6 6;
+	}
+	.icon,
+	.icon * {
+		fill: none;
+		stroke: var(--ink);
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+</style>
