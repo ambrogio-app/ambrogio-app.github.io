@@ -22,7 +22,7 @@ This repository contains only the website of Ambrogio: a single Astro page publi
 ```bash
 V=ambrogio-video/build/ambrogio-demo.mp4; O=ambrogio-app.github.io/public/video
 ffmpeg -i $V -vf scale=1280:-2 -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart $O/ambrogio-demo.mp4
-ffmpeg -ss 43.8 -i $V -frames:v 1 -vf scale=1280:-2 -q:v 3 $O/ambrogio-demo.jpg
+ffmpeg -ss 21 -i $V -frames:v 1 -vf scale=1280:-2 -q:v 3 $O/ambrogio-demo.jpg
 ```
 
 ## Publishing and checks

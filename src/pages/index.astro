@@ -74,7 +74,6 @@ const features = [
 			<div class="wrap">
 				<h1><Logo class="logo" /></h1>
 				<p class="tagline">{tagline}</p>
-				<p class="lede">Multi-agent by design: each agent you configure handles one job, such as the house, music, weather or your documents, using the services you already host.</p>
 				<div class="actions">
 					<a class="button primary" href={`${docs}tutorials/install-ambrogio/`}>Self-host Ambrogio</a>
 				</div>
@@ -91,6 +90,7 @@ const features = [
 					<source src="/video/ambrogio-demo.mp4" type="video/mp4" />
 					<a href="/video/ambrogio-demo.mp4">Watch the demo video</a>.
 				</video>
+				<p class="lede">Multi-agent by design: each agent you configure handles one job, such as the house, music, weather or your documents, using the services you already host.</p>
 			</div>
 		</header>
 
@@ -186,15 +186,20 @@ const features = [
 		width: min(16rem, 70vw);
 		height: auto;
 	}
+	@media (max-width: 720px) {
+		.hero :global(.logo) {
+			width: 10rem;
+		}
+	}
 	.tagline {
 		font-size: clamp(1.2rem, 3.5vw, 1.5rem);
 		max-width: 40rem;
-		margin: 0 auto 1rem;
+		margin: 0 auto 2rem;
 	}
 	.lede {
 		color: var(--muted);
 		max-width: 40rem;
-		margin: 0 auto 2rem;
+		margin: 1.5rem auto 0;
 	}
 	.actions {
 		display: flex;
