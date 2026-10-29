@@ -2,9 +2,9 @@
   <img src=".github/logo.svg" alt="Ambrogio" width="160">
 </p>
 
-# Ambrogio — website
+# Ambrogio website
 
-**Ambrogio**: talk to it like Alexa, chat with it like ChatGPT — one self-hosted AI assistant for your whole homelab. Multi-agent by design: each agent you configure handles one job, such as the house, music, weather or your documents, using the services you already host.
+**Ambrogio**: talk to it like Alexa, chat with it like ChatGPT. One self-hosted AI assistant for your whole homelab. Multi-agent by design: each agent you configure handles one job, such as the house, music, weather or your documents, using the services you already host.
 
 This repository holds the website of Ambrogio, a single page with what Ambrogio does and links to the [documentation](https://ambrogio-app.github.io/ambrogio-docs/) and the repositories. It is built with [Astro](https://astro.build/) and published at <https://ambrogio-app.github.io/>.
 
